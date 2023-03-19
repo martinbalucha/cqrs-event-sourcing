@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SocialMedia.CQRS.Core\SocialMedia.CQRS.Core.csproj" />
+  </ItemGroup>
+
 </Project>

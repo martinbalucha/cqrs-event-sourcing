@@ -1,8 +1,9 @@
-﻿using SocialMedia.CQRS.Core.Commands;
+﻿using MediatR;
+using SocialMedia.CQRS.Core.Commands;
 
 namespace SocialMedia.Command.Server.Commands;
 
-public class AddCommentCommand : ICommand
+public class AddCommentCommand : ICommand<Unit>
 {
     public Guid Id { get; init; }
     public required string Comment { get; set; }
