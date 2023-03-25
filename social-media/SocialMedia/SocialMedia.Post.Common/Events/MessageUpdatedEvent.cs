@@ -1,7 +1,8 @@
 ﻿using SocialMedia.CQRS.Core.Events;
 
 namespace SocialMedia.Post.Common.Events;
-internal class MessageUpdatedEvent : IEvent
+
+public class MessageUpdatedEvent : IEvent
 {
     public Guid Id { get; init; }
     public int Version { get; init; }

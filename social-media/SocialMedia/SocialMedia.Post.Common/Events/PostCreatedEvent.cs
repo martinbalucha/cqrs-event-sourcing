@@ -8,5 +8,6 @@ public class PostCreatedEvent : IEvent
     public int Version { get; init; }
     public string Type => nameof(PostCreatedEvent);
     public required string Message { get; set; }
+    public required string Author { get; init; }
     public required DateTimeOffset DatePosted { get; init; }
 }
