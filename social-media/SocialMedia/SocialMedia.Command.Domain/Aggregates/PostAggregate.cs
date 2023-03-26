@@ -68,8 +68,8 @@ public class PostAggregate : AggregateRoot
         }
 
         var postLikedEvent = new PostLikedEvent
-        { 
-            Id = Id 
+        {
+            Id = Id
         };
 
         RaiseEvent(postLikedEvent);
@@ -80,23 +80,23 @@ public class PostAggregate : AggregateRoot
         Id = postLikedEvent.Id;
     }
 
-    public void AddComment(string comment, string username)
+    public void AddComment(UserComment userComment)
     {
         if (!Active)
         {
             throw new InvalidOperationException("An inactive post cannot be commented.");
         }
-        if (string.IsNullOrWhiteSpace(comment))
+        if (string.IsNullOrWhiteSpace(userComment.Comment))
         {
             throw new InvalidOperationException($"The comment cannot be null or white space.");
         }
 
         var commmentAddedEvent = new CommentAddedEvent
-        { 
+        {
             Id = Id,
             CommentId = Guid.NewGuid(),
-            Comment = comment,
-            Username = username,
+            Comment = userComment.Comment,
+            Username = userComment.Username,
             CommentDate = DateTimeOffset.Now,
         };
 
@@ -107,5 +107,87 @@ public class PostAggregate : AggregateRoot
     {
         Id = commentAddedEvent.Id;
         comments.Add(commentAddedEvent.Id, new UserComment(commentAddedEvent.Username, commentAddedEvent.Comment));
+    }
+
+    public void EditComment(Guid commentId, UserComment userComment)
+    {
+        if (!Active)
+        {
+            throw new InvalidOperationException($"An inactive post cannot be edited.");
+        }
+
+        if (!comments[commentId].Username.Equals(userComment.Username, StringComparison.InvariantCultureIgnoreCase))
+        {
+            throw new InvalidOperationException("A comment written by a different user cannot be edited.");
+        }
+
+        var commentUpdatedEvent = new CommentUpdatedEvent
+        {
+            Id = Id,
+            CommentId = commentId,
+            CommentText = userComment.Comment,
+            Username = userComment.Username,
+            EditDate = DateTimeOffset.Now
+        };
+
+        RaiseEvent(commentUpdatedEvent);
+    }
+
+    public void Apply(CommentUpdatedEvent commentUpdatedEvent)
+    {
+        Id = commentUpdatedEvent.Id;
+        comments[commentUpdatedEvent.Id] = new UserComment(commentUpdatedEvent.Username, commentUpdatedEvent.CommentText);
+    }
+
+    public void RemoveComment(Guid commentId, string username)
+    {
+        if (!Active)
+        {
+            throw new InvalidOperationException($"An inactive post cannot be removed.");
+        }
+        if (!comments[commentId].Username.Equals(username, StringComparison.InvariantCultureIgnoreCase))
+        {
+            throw new InvalidOperationException("A comment written by a different user cannot be removed.");
+        }
+
+        var commentRemovedEvent = new CommentRemovedEvent
+        {
+            Id = Id,
+            CommentId = commentId
+        };
+
+        RaiseEvent(commentRemovedEvent);
+    }
+
+    public void Apply(CommentRemovedEvent commentRemovedEvent)
+    {
+        Id = commentRemovedEvent.Id;
+        comments.Remove(commentRemovedEvent.Id);
+    }
+
+    public void DeletePost(string username)
+    {
+        if (!Active)
+        {
+            throw new InvalidOperationException($"The post has already been removed.");
+        }
+
+        if (!Author.Equals(username, StringComparison.InvariantCultureIgnoreCase))
+        {
+            throw new InvalidOperationException("A post written by a different user cannot be removed.");
+        }
+
+        var postRemovedEvent = new PostRemovedEvent
+        {
+            Id = Id
+        };
+
+        RaiseEvent(postRemovedEvent);
+    }
+
+    public void Apply(PostRemovedEvent posrtRemovedEvent)
+    {
+        Id = posrtRemovedEvent.Id;
+        Active = false;
     }
 }
