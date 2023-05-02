@@ -4,8 +4,8 @@ namespace SocialMedia.Post.Common.Events;
 
 public class CommentUpdatedEvent : IEvent
 {
-    public Guid Id { get; init; }
-    public int Version { get; init; }
+    public Guid Id { get; set; }
+    public int Version { get; set; }
     public string Type => nameof(CommentUpdatedEvent);
     public required Guid CommentId { get; init; }
     public required string CommentText { get; set; }

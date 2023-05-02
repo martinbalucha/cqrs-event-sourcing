@@ -1,4 +1,6 @@
 using SocialMedia.Command.Infrascturture.Config;
+using SocialMedia.Command.Infrascturture.Persistence;
+using SocialMedia.CQRS.Core.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<MongoDbConfiguration>(builder.Configuration.GetSection(nameof(MongoDbConfiguration)));
+builder.Services.AddScoped<IEventStoreRepository, MongoEventStoreRepository>();
+
 
 var app = builder.Build();
 

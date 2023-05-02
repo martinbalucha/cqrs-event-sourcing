@@ -5,7 +5,7 @@ namespace SocialMedia.Command.Server.Commands;
 
 public class RemoveCommentCommand : ICommand<Unit>
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
 
     public Guid CommentId { get; init; }
 

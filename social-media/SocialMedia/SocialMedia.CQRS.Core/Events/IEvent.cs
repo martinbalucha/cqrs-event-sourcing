@@ -4,6 +4,6 @@ namespace SocialMedia.CQRS.Core.Events;
 
 public interface IEvent : IMessage
 {
-    int Version { get; init; }
+    int Version { get; set; }
     string Type { get; }
 }

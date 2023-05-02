@@ -4,8 +4,8 @@ namespace SocialMedia.Post.Common.Events;
 
 public class PostCreatedEvent : IEvent
 {
-    public Guid Id { get; init; }
-    public int Version { get; init; }
+    public Guid Id { get; set; }
+    public int Version { get; set; }
     public string Type => nameof(PostCreatedEvent);
     public required string Message { get; set; }
     public required string Author { get; init; }

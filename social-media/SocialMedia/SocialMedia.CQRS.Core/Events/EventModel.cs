@@ -7,7 +7,7 @@ public class EventModel
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public required string Id { get; init; }
+    public string? Id { get; set; }
     public DateTimeOffset TimeStamp { get; set; }
     public Guid AggregateId { get; set; }
     public string? AggregateType { get; set; }

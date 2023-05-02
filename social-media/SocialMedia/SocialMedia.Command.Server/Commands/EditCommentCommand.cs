@@ -5,7 +5,7 @@ namespace SocialMedia.Command.Server.Commands;
 
 public class EditCommentCommand : ICommand<Unit>
 {
-    public Guid Id { get; init ; }
+    public Guid Id { get; set ; }
     public required string Comment { get; set; }
     public required string Username { get; init; }
 }

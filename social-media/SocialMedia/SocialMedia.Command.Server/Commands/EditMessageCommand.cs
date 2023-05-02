@@ -5,6 +5,6 @@ namespace SocialMedia.Command.Server.Commands;
 
 public class EditMessageCommand : ICommand<Unit>
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
     public required string Message { get; set; }
 }

@@ -5,5 +5,5 @@ namespace SocialMedia.Command.Server.Commands;
 
 public class LikePostCommand : ICommand<Unit>
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
 }

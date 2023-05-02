@@ -4,7 +4,7 @@ namespace SocialMedia.Post.Common.Events;
 
 public class PostRemovedEvent : IEvent
 {
-    public Guid Id { get; init; }
-    public int Version { get; init; }
+    public Guid Id { get; set; }
+    public int Version { get; set; }
     public string Type => nameof(PostRemovedEvent);
 }
